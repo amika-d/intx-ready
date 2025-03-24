@@ -1,0 +1,184 @@
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 36px; /* Reduced font size */
+    color: #333;
+    animation: fadeIn 1s ease-in-out; /* Fade-in animation */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.continue-application img, .continue-application1 img {
+    width: 80px; /* Reduced image size */
+    height: 80px;
+    object-fit: contain; /* Ensure image fits within button */
+}
+
+.label {
+    margin-top: 10px;
+    font-size: 20px; /* Reduced label font size */
+    font-weight: 600; /* Slightly lighter font weight */
+    color: #000000;
+    text-align: center;
+    transition: color 0.3s;
+}
+
+.continue-application:hover + .label, .continue-application1:hover + .label {
+    color: #EAC42D;
+}
+
+.button-wrapper {
+    display: flex; /* Row layout */
+    justify-content: center; /* Center buttons horizontally */
+    gap: 40px; /* Space between button containers */
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column; /* Stack button and label vertically */
+    align-items: center; /* Center items horizontally */
+}
+.continue-application1{
+    background-color: #EAC42D; /* Button background color */
+    color: #fff; /* Text color */
+    border: none; /* No border */
+    border-radius: 50px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    font-weight: 500; /* Font weight */
+    line-height: 19px; /* Line height */
+    padding: 15px; /* Padding */
+    width: 500px; /* Button width */
+    height: 270px; /* Button height */
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background 0.3s, transform 0.3s; /* Transition effects */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-position: top;
+}
+
+.continue-application {
+    background-color: #EAC42D; /* Button background color */
+    color: #fff; /* Text color */
+    border: none; /* No border */
+    border-radius: 50px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    font-weight: 500; /* Font weight */
+    line-height: 19px; /* Line height */
+    padding: 15px; /* Padding */
+    width: 500px; /* Button width */
+    height: 270px; /* Button height */
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background 0.3s, transform 0.3s; /* Transition effects */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-position: top;
+    
+}
+
+.continue-application:hover, .continue-application1:hover {
+    background-color: rgb(254, 239, 179); /* Background color on hover */
+    transform: scale(1.05); /* Scale effect on hover */
+}
+
+.continue-application img {
+    width: 180px; /* Adjust as needed */
+    height: 270px; /* Adjust as needed */
+    display: block;
+    margin-left: -240px;
+    margin-top: 1px;
+    border-radius: 50px;;
+}
+.continue-application1 img {
+    width: 180px; /* Adjust as needed */
+    height: 270px; /* Adjust as needed */
+    display: block;
+    margin-left: -240px;
+    margin-top: 1px;
+    border-radius: 50px;;
+}
+
+.button-container button {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    background-color: #ffffff; /* Light background */
+    box-shadow: 0 10px 15px -3px rgb(255, 200, 0), 0 4px 6px -2px rgba(255, 200,0);
+}
+
+.button-container button:hover {
+    background-color: #ffffff; /* Slightly darker on hover */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.button-container {
+    text-align: center; /* Center the button and label */
+    margin: 20px;
+}
+
+.label {
+    margin-top: 10px; /* Space between button and label */
+    font-size: 66px; /* Font size for label */
+    color: #000000; /* Color for label */
+    text-align: center; /* Center text */
+    transition: color 0.3s; /* Transition for color change */
+    margin-left: 15px;
+    line-height: 1.2;
+    text-align: left;
+    font-family: Tahoma, Verdana, sans-serif;
+}
+
+.label1 {
+    margin-top: 10px; /* Space between button and label */
+    font-size: 56px; /* Font size for label */
+    color: #000000; /* Color for label */
+    text-align: center; /* Center text */
+    transition: color 0.3s; /* Transition for color change */
+    margin-left: 15px;
+    line-height: 1.3;
+    text-align: left;
+    font-family: Tahoma, Verdana, sans-serif;
+}
+
+.label2{
+    margin-top: 85px; /* Space between button and label */
+    font-size: 30px; /* Font size for label */
+    color: #000000; /* Color for label */
+    text-align: center; /* Center text */
+    transition: color 0.3s; /* Transition for color change */
+    margin-left: -75px;
+    font-family: Tahoma, Verdana, sans-serif;
+
+}
+.label21{
+    margin-top: 160px; /* Space between button and label */
+    font-size: 30px; /* Font size for label */
+    color: #000000; /* Color for label */
+    text-align: center; /* Center text */
+    transition: color 0.3s; /* Transition for color change */
+    margin-left: -265px;
+    font-family: Tahoma, Verdana, sans-serif;
+
+}
+
+.continue-application:hover + .label, .continue-application1:hover + .label {
+    color: #EAC42D; /* Change label color on button hover */
+}

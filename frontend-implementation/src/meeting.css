@@ -1,0 +1,233 @@
+/* Custom Properties & Theme */
+:root {
+  --primary: #1ed8ad;
+  --danger: #d15252;
+  --bg: radial-gradient(circle at top right, #1a1a1a, #2d2d2d);
+  --glass: rgba(0, 0, 0, 0.05);
+  --blur: blur(10px);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  background: var(--bg);
+  min-height: 90vh;
+  font-family: 'Inter', system-ui, sans-serif;
+} 
+
+/* 3D Perspective Container */
+.meeting-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(500px, 100%), 1fr));
+  gap: 1rem;
+  perspective: 1000px;
+  padding: 2rem;
+}
+
+/* Video Card Effect */
+.video-wrapper {
+  position: relative;
+  border-radius: 1.5rem;
+  transform-style: preserve-3d;
+  transition: var(--transition);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+.video-wrapper video,
+.video-wrapper img,
+.video-wrapper .react-webcam {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit; /* Keep rounded corners */
+  position: relative;
+  z-index: 1;
+}
+
+.video-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.2); /* Subtle overlay effect */
+  height: 100%;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.camera-off {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  background-color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+/* Recording indicator */
+.recording-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 10;
+}
+
+.recording-dot {
+  width: 12px;
+  height: 12px;
+  background-color: red;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.controls {
+  position: fixed;
+  bottom: -6rem; /* 2rem from the bottom of the viewport */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Offset by half its width to truly center */
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  z-index: 9999; /* Ensure it stays above other content */
+} 
+
+.controls button {
+  --shine: linear-gradient(
+    120deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 75%
+  );
+  
+  position: relative;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 0.75rem;
+  background: var(--glass);
+  color: white;
+  transition: var(--transition);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.controls button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--shine);
+  background-size: 300% 300%;
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.controls button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.controls button:hover::before {
+  opacity: 1;
+  animation: shine 3s infinite;
+}
+
+.controls button i {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Button variants */
+.btn-video.off {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.btn-transcribe.active {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.btn-record.recording {
+  background: var(--danger);
+  animation: pulse 1.5s infinite;
+}
+
+.btn-end {
+  background: var(--danger);
+}
+
+/* Animations */
+@keyframes shine {
+  0% { background-position: 150% 50%; }
+  100% { background-position: -50% 50%; }
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Captions Animation */
+#captionsContainer {
+  animation: captionSlide 0.5s ease-out;
+  transform-origin: bottom center;
+}
+
+@keyframes captionSlide {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Avatar Floating Effect */
+.avatar-section {
+  animation: float 4s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.avatar-section canvas {
+  transition: transform 0.3s ease-out;
+}
+
+.avatar-section canvas:hover {
+  transform: scale(1.05) rotateY(10deg);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 720px) {
+  .meeting-container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  .controls {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

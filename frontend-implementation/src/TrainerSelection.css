@@ -1,0 +1,225 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 20px;
+    margin-top: 150px;   
+}
+
+.trainer-page{
+    margin-top: 150px;
+}
+
+.trainer-card-content {
+    line-height: 0.5;
+    width: 300px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.trainer-images {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    object-position: top; 
+}
+
+.close-button {
+    background: white; 
+    position: absolute;
+    border: none;
+    top: 30px;
+    right: -185px;
+    font-size: 20px;
+    cursor: pointer;
+    color: black;
+    left: 670px;
+    width: 50px;
+}
+
+.close-button:hover {
+    background: white;
+}
+
+.modal-body {
+    margin-top: -30px;
+    margin-left: -10px;
+    display: flex;
+    flex-direction: row;
+    text-align: justify;
+    gap: 20px;
+    width: 100%; /* Use full width of modal */
+    overflow-y: auto; /* Allow vertical scrolling */
+}
+
+.modal-body img.trainer-modal-image {
+    margin-top: 55px;
+    width: 150px;
+    height: 210px;
+    border-radius: 40px;
+    object-fit: cover;
+    margin-left: 40px; /* Adjusted margin */
+    object-position: top; 
+}
+
+.details-container {
+    margin-top: 45px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: justify;
+    flex: 1; /* Allow it to take remaining space */
+    margin-right: 15px;
+}
+
+.modal-body p {
+    margin: 0;
+    color: #000000;
+    line-height: 1.5;
+    text-align: justify;
+}
+
+.p {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    text-align: justify;
+}
+
+#info {
+    margin: 0;
+    line-height: 1.5;
+    text-align: justify;
+}
+
+.rating-stars {
+    color: #bc9e24;
+    font-size: 1.2rem;
+    font-size: 36px;
+}
+
+.section {
+    margin-right: 500px;
+}
+
+#trainer-name {
+    font-size: 48px;
+    text-align: left;
+    margin-left: 35px;
+    font-family: "Sora", sans-serif;
+    color: #000000;
+    font-weight: bold;
+}
+
+body {
+    overflow-x: hidden;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+h1 {
+    font-family: "Sora", sans-serif;
+    font-size: 56px;
+    color: black;
+    text-align: center;
+    margin-top: 30px;
+    animation: slideDown 0.8s ease-in-out;
+}
+#style1{
+    color: #EAC42D;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+fieldset {
+    width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    background-color: #fff;
+    padding: 0;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 0 0 auto; /* Prevent fieldsets from stretching */
+}
+
+.trainer-overlay {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 999; /* Ensure it is above other content */
+}
+
+.trainer-overlay.active {
+    display: block; /* Show overlay when active */
+}
+
+.trainer-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 40px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+    width: 700px;
+    height: auto;
+    max-height: 80%;
+    overflow-y: auto;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.trainer-modal.active {
+    display: block;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.trainer-container1 {
+    display: flex;
+    flex-wrap: wrap; /* Allows fieldsets to wrap to the next line */
+    justify-content: flex-start; /* Align fieldsets to the left */
+    gap: 20px; /* Space between fieldsets */
+    padding: 20px; /* Padding around the container */
+    margin-left: 50px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .trainer-container1 {
+        flex-direction: column; /* Stack cards vertically on smaller screens */
+        align-items: center; /* Center align cards */
+    }
+
+    .trainer-card-content {
+        width: 90%; /* Make cards take more width on smaller screens */
+    }
+
+    .modal {
+        width: 90%; /* Make modal take more width on smaller screens */
+    }
+}
