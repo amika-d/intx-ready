@@ -22,16 +22,18 @@ const Success = () => {
 
 // CSS Styles (Inline)
 const styles = {
+  
   container12: {
-    width: '800px',
+    width: '102%',
+    height: '600px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
     fontFamily: 'Sora, sans-serif',
-    marginTop: '180px',
     position: 'fixed',
-    marginLeft: '380px',
+    marginLeft: '-10px',
+    marginTop: '-10px',
+    backgroundColor:'white',
   },
   card5: {
     backgroundColor: '#fff',
@@ -40,6 +42,7 @@ const styles = {
     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
     textAlign: 'center',
     width: '80%',
+    marginTop: '50px',
     maxWidth: '600px',
     transition: 'transform 0.3s ease-in-out',
   },

@@ -28,18 +28,20 @@ const Cancel = () => {
 // CSS Styles (Inline)
 const styles = {
   container: {
-    width: '800px',
+    width: '102%',
+    height: '600px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
     backgroundColor: '#fff',
     fontFamily: 'Sora, sans-serif',
-    marginTop: '50px',
+    marginTop: '-10px',
     position: 'fixed',
-    marginLeft: '380px',
+    marginLeft: '-10px',
   },
   card: {
+    marginTop: '-100px',
     backgroundColor: '#fff',
     padding: '30px',
     borderRadius: '15px',
