@@ -29,7 +29,7 @@ router.post("/voice", async (req, res) => {
     const response = await axios.post(endpoint, payload, {
       headers: { "Content-Type": "application/json" },
     });
-    console.log("Google TTS response:", response.data);
+    console.log("Google TTS response: done");
     if (!response.data.audioContent) {
       return res.status(500).json({ error: "No audio content received from API" });
     }

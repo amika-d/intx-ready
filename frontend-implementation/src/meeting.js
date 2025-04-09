@@ -42,6 +42,8 @@ const MeetingPage = () => {
     const [feedback, setFeedback] = useState([]);
     const [response, setResponse] = useState(null);
     const [interviewText, setInterviewText] = useState('');
+    const [aiQuestions, setAiQuestions] = useState([]);
+    const [userAnswers, setUserAnswers] = useState([]);
     const location = useLocation();
     const cvSend = location.state?.cvSend ?? false;
     const skills = location.state?.skills ?? [];
@@ -175,7 +177,13 @@ const MeetingPage = () => {
             socketRef.current.disconnect();
         }
         
-        navigation('/feedback');
+        navigation('/feedback',
+            {state: {
+                feedback: feedback,
+                userAnswers: userAnswers,
+                
+            }}
+        );
     };
 
     const handleRecording = () => {
@@ -336,7 +344,7 @@ const MeetingPage = () => {
           const response = await axios.post("http://localhost:5000/api/voice", {
             text,
           });
-          console.log("Response from TTS API:", response.data);
+          console.log("Response from TTS API: done audio camed.");
           if (!response.data.audioContent) {
             console.error("No audio content received");
             return;
@@ -354,13 +362,29 @@ const MeetingPage = () => {
         try {
             const response = await axios.post("http://localhost:5000/api/feedback", {aiResponse, userInput});
             console.log("Feedback response:", response.data);
-            setFeedback((preFeedback) => [...preFeedback, response.data]);
-            console.log(feedback)
+            
+            const updatedFeedback = [...feedback, response.data];
+
+            setFeedback(updatedFeedback);
+            
+
+            const updatedAiQuestions = [...aiQuestions, aiResponse];
+            setAiQuestions(updatedAiQuestions);
+            const updatedUserAnswers = [...userAnswers, userInput];
+            setUserAnswers(updatedUserAnswers);
+            console.log("Updated feedback:", updatedFeedback);
+            console.log("Updated aiQuestions:", updatedAiQuestions);
+            console.log("Updated userAnswers:", updatedUserAnswers);
+
+
+            return updatedFeedback;
         } catch (error) {
             console.error("Error fetching feedback:", error);
         }
     }
-
+    useEffect(() => {
+        console.log("Feedback updated:", feedback);
+    }, [feedback]);
 
     const sendMessage = async (userInput) => {
         if (!userInput.trim()) return;
@@ -396,8 +420,8 @@ const MeetingPage = () => {
             console.log("AI Response after synthesis:", data.response);
             const res=await synthesizeSpeech(data.response);
             console.log("my new", res);
-            getFeedback(aiResponse, userInput);
-
+            const updatedFeedback = getFeedback(aiResponse, userInput);
+            console.log("Updated feedback after the api call:", updatedFeedback);
 
             const audio = new Audio(res);
             // audio.loop = true;
@@ -407,7 +431,7 @@ const MeetingPage = () => {
             console.error("Error in chat session:", error);
         }
     };
-    const processCV = async () => {
+    const startInterview = async () => {
         try {
            
             console.log("🚀 Starting processCV function...");
@@ -570,7 +594,7 @@ const MeetingPage = () => {
         <div style={{ marginTop: '1rem' }}>
                 <h1>Meeting Page</h1>
                 {cvId ? <p>Interview ID: {response}</p> : <p>Loading...</p>}
-                <button onClick={processCV}>Start Interview</button>
+                <button onClick={startInterview}>Start Interview</button>
 
                 {/* Input + Button for sending message */}
                 <div style={{ display: 'flex', marginTop: '1rem', gap: '0.5rem' }}>

@@ -1,5 +1,8 @@
 import styled, { keyframes } from "styled-components"
-import Navigation from "../Navigation"
+import Navigation from "../Navigation";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 // Animation keyframes
 const fillCircle = keyframes`
@@ -315,6 +318,11 @@ const BarValue = styled.div`
 `
 
 function Feedback() {
+  const location = useLocation();
+  const feedbackData = location.state?.feedbackData || [];
+  const userAnswers =  location.state?.userAnswers || [];
+  console.log("Feedback Data:", feedbackData);
+  console.log("User Answers:", userAnswers);
   const stats = {
     overallScore: 72,
     metrics: [
@@ -368,49 +376,46 @@ function Feedback() {
 
           <RightColumn>
 
-            <FeedbackSection>
-              <FeedbackTitle>AI Feedback</FeedbackTitle>
-              <QuestionsContainer>
-                {[
-                  {
-                    id: 1,
-                    question: "Tell me about a time when you had to work with a difficult team member.",
-                    answer:
-                      "I once worked with a team member who consistently missed deadlines. I scheduled a private meeting to understand their challenges and discovered they were overwhelmed with multiple projects. We worked together to prioritize tasks and I helped them communicate their bandwidth issues to management.",
-                    feedback:
-                      "Great approach to addressing the issue directly but with empathy. You demonstrated good communication and problem-solving skills. Consider mentioning the specific outcome of your intervention to showcase the impact of your actions.",
-                  },
-                  {
-                    id: 2,
-                    question: "How do you handle pressure or stressful situations?",
-                    answer:
-                      "I manage stress by breaking down complex problems into smaller, manageable tasks. I also practice mindfulness techniques and ensure I maintain a healthy work-life balance to prevent burnout.",
-                    feedback:
-                      "Your answer shows good self-awareness and practical strategies. To strengthen it further, consider including a specific example that demonstrates how you've successfully applied these techniques in a real work situation.",
-                  },
-                  {
-                    id: 3,
-                    question: "Describe a situation where you had to make a difficult decision.",
-                    answer:
-                      "As a project lead, I had to decide whether to delay a product launch due to last-minute bugs. After analyzing the risks and consulting with stakeholders, I decided to postpone the launch by two weeks to ensure quality, which ultimately led to better customer satisfaction.",
-                    feedback:
-                      "Excellent example that demonstrates your decision-making process and prioritization of quality. You could enhance this answer by briefly mentioning how you communicated this decision to the team and managed expectations.",
-                  },
-                ].map((item) => (
-                  <QuestionCard key={item.id}>
-                    <QuestionHeader>Question {item.id}</QuestionHeader>
-                    <AnswerSection>
-                      <SectionLabel>Answer</SectionLabel>
-                      <SectionContent>{item.answer}</SectionContent>
-                    </AnswerSection>
-                    <div>
-                      <SectionLabel>Feedback</SectionLabel>
-                      <FeedbackContent>{item.feedback}</FeedbackContent>
-                    </div>
-                  </QuestionCard>
-                ))}
-              </QuestionsContainer>
-            </FeedbackSection>
+          <FeedbackSection>
+    <FeedbackTitle>AI Feedback</FeedbackTitle>
+    <QuestionsContainer>
+      {feedbackData.map((feedback, index) => {
+        // Match strengths and areas of improvement using markdown formatting
+        const strengthsMatch = feedback.match(/\*\*Strengths:\*\*(.*?)(?=-\s\*\*)/s);
+        const areasMatch = feedback.match(/\*\*Areas for improvement:\*\*(.*?)(?=$|\s-\s\*\*)/s);
+
+        const strengths = strengthsMatch ? strengthsMatch[1].trim() : "";
+        const areas = areasMatch ? areasMatch[1].trim() : "";
+
+        return (
+          <QuestionCard key={index}>
+            <QuestionHeader>Question {index + 1}</QuestionHeader>
+            <AnswerSection>
+              <SectionLabel>Your Answer</SectionLabel>
+              <SectionContent>{userAnswers[index] || "No response recorded"}</SectionContent>
+            </AnswerSection>
+            <div>
+              <SectionLabel>Feedback</SectionLabel>
+              <FeedbackContent>
+                <strong>Strengths:</strong> {strengths}
+                <br /><br />
+                <strong>Areas for improvement:</strong> {areas}
+              </FeedbackContent>
+            </div>
+          </QuestionCard>
+        );
+      })}
+
+      {feedbackData.length === 0 && (
+        <QuestionCard>
+          <QuestionHeader>No feedback available</QuestionHeader>
+          <SectionContent>
+            No feedback data was found for this session. Please make sure you've completed an interview.
+          </SectionContent>
+        </QuestionCard>
+      )}
+    </QuestionsContainer>
+  </FeedbackSection>
           </RightColumn>
         </MainContent>
       </ContentSection>
