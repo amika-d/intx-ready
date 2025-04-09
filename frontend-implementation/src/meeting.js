@@ -364,7 +364,13 @@ const MeetingPage = () => {
             const response = await axios.post("http://localhost:5000/api/feedback", {aiResponse, userInput});
             console.log("Feedback response:", response.data);
             
-            const updatedFeedback = [...feedback, response.data.response];
+            const cleanedFeedback = response.data.response
+            .replace(/\*\*/g, "") // Remove double asterisks
+            .replace(/\*/g, "") // Remove single asterisks
+            .replace(/\\n/g, " ") // Replace newlines with spaces
+            .trim(); // Trim any extra whitespace
+
+            const updatedFeedback = [...feedback, cleanedFeedback];
 
             setFeedback(updatedFeedback);
             
@@ -420,7 +426,7 @@ const MeetingPage = () => {
             // Call the synthesizeSpeech function to send the message to Wavenet or any other TTS system
             console.log("AI Response after synthesis:", data.response);
             const res=await synthesizeSpeech(data.response);
-            console.log("my new", res);
+            
             const updatedFeedback = getFeedback(aiResponse, userInput);
             console.log("Updated feedback after the api call:", updatedFeedback);
 
