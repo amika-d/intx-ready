@@ -4,6 +4,7 @@ import Webcam from 'react-webcam';
 import { useNavigate } from 'react-router-dom';
 import { useReactMediaRecorder } from "react-media-recorder";
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 const MeetingPage = () => {
     const navigation = useNavigate();
@@ -41,6 +42,11 @@ const MeetingPage = () => {
     const [feedback, setFeedback] = useState([]);
     const [response, setResponse] = useState(null);
     const [interviewText, setInterviewText] = useState('');
+    const location = useLocation();
+    const cvSend = location.state?.cvSend ?? false;
+    const skills = location.state?.skills ?? [];
+
+    
 
     useEffect(() => {
         const initializeSocket = () => {
@@ -68,6 +74,11 @@ const MeetingPage = () => {
             }
         };
     }, []);
+
+    useEffect(() => {
+        console.log("Skills received:", skills);
+        console.log("cvSend received:", cvSend);
+    }, [skills, cvSend]);
 
     useEffect(() => {
         if (isVideoOn) {
@@ -400,9 +411,22 @@ const MeetingPage = () => {
         try {
            
             console.log("🚀 Starting processCV function...");
+            let response;
+            if (cvSend){
+                console.log("sending request to the openai");
+                response = await axios.post("http://localhost:8000/process_cv");
+            }else{
+                console.log("sending to the backend", skills);
+                if (!skills || skills.length === 0) {
+                    console.error("Skills array is empty. Cannot process CV.");
+                }
+                response = await axios.post("http://localhost:5000/api/skills", {
+                    technical_skills: skills.join(", "),
+                });
+            }
             
             // Call FastAPI to start the process
-            const response = await axios.post("http://localhost:8000/process_cv");
+            
 
             console.log("✅ AI Response Received:", response.data);
             
@@ -543,8 +567,28 @@ const MeetingPage = () => {
             </div>
             <div >
         <h1>Meeting Page</h1>
-        {cvId ? <p>Interview ID: {response}</p> : <p>Loading...</p>}
-        <button onClick={processCV}>Start Interview</button>
+        <div style={{ marginTop: '1rem' }}>
+                <h1>Meeting Page</h1>
+                {cvId ? <p>Interview ID: {response}</p> : <p>Loading...</p>}
+                <button onClick={processCV}>Start Interview</button>
+
+                {/* Input + Button for sending message */}
+                <div style={{ display: 'flex', marginTop: '1rem', gap: '0.5rem' }}>
+                    <input 
+                        type="text" 
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        placeholder="Type your message..."
+                        style={{ flex: 1, padding: '0.5rem', borderRadius: '5px', border: '1px solid #ccc' }}
+                    />
+                    <button 
+                        onClick={() => sendMessage(userInput)} 
+                        style={{ padding: '0.5rem 1rem', borderRadius: '5px', backgroundColor: '#007bff', color: 'white', border: 'none' }}
+                    >
+                        Send
+                    </button>
+                </div>
+            </div>
         </div>
           
             

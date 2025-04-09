@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
-import './MainPage.css';
-import image from './Avatar.png';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from "react";
+import styled from "styled-components";
+import "./MainPage.css";
+import image from "./Avatar.png";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const StyledWrapper = styled.div`
   .btn {
@@ -22,10 +23,10 @@ const StyledWrapper = styled.div`
     background-image: linear-gradient(#212121, #212121),
       linear-gradient(
         137.48deg,
-rgba(0, 14, 72, 0.68) 10%,
-rgb(0, 0, 68) 45%,
-rgb(3, 16, 75) 67%,
-rgb(0, 9, 34) 87%
+        rgba(0, 14, 72, 0.68) 10%,
+        rgb(0, 0, 68) 45%,
+        rgb(3, 16, 75) 67%,
+        rgb(0, 9, 34) 87%
       );
     background-origin: border-box;
     background-clip: content-box, border-box;
@@ -66,11 +67,11 @@ rgb(0, 9, 34) 87%
   }
 
   .circle:nth-of-type(1) {
-    background:rgb(10, 0, 65);
+    background: rgb(10, 0, 65);
   }
 
   .circle:nth-of-type(2) {
-    background:rgb(7, 0, 80);
+    background: rgb(7, 0, 80);
   }
 
   .btn:hover #container-stars {
@@ -180,41 +181,50 @@ rgb(0, 9, 34) 87%
       transform: scale(0.75);
       box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
     }
-  }`;
+  }
+`;
 
 const MainPage = () => {
-  const titleText = "LET'S BEGIN YOUR AI INTERVIEW SIMULATION: PRACTICE MAKES PERFECT!";
-  const [displayedTitle, setDisplayedTitle] = useState('');
+  const titleText =
+    "LET'S BEGIN YOUR AI INTERVIEW SIMULATION: PRACTICE MAKES PERFECT!";
+  const [displayedTitle, setDisplayedTitle] = useState("");
   const [cursorVisible, setCursorVisible] = useState(true);
   const titleIndex = useRef(0);
 
   const [showModal, setShowModal] = useState(false);
-  const [jobTitle, setJobTitle] = useState('');
+  const [jobTitle, setJobTitle] = useState("");
   const [step, setStep] = useState(1);
   const [selection, setSelection] = useState(null);
   const [cvFile, setCvFile] = useState(null);
   const [proposalFile, setProposalFile] = useState(null);
-  const [sourceOption, setSourceOption] = useState('');
+  const [sourceOption, setSourceOption] = useState("");
   const [skills, setSkills] = useState([]);
-  const [newSkill, setNewSkill] = useState('');
+  const [newSkill, setNewSkill] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0); // Track upload progress
   const [isUploading, setIsUploading] = useState(false); // Flag to track upload state
-  const [cvFileName, setCvFileName] = useState('');
-  const [proposalFileName, setProposalFileName] = useState('');
+  const [cvFileName, setCvFileName] = useState("");
+  const [proposalFileName, setProposalFileName] = useState("");
   const Navigate = useNavigate();
+  const [cvSent, setCvSent] = useState(false);
+  
+  
+
 
   useEffect(() => {
     const typingInterval = setInterval(() => {
       if (titleIndex.current < titleText.length) {
-        setDisplayedTitle(prev => prev + titleText.charAt(titleIndex.current));
+        setDisplayedTitle(
+          (prev) => prev + titleText.charAt(titleIndex.current)
+        );
         titleIndex.current++;
       } else {
         clearInterval(typingInterval);
       }
     }, 50);
 
+
     const cursorInterval = setInterval(() => {
-      setCursorVisible(prev => !prev);
+      setCursorVisible((prev) => !prev);
     }, 500);
 
     return () => {
@@ -226,12 +236,12 @@ const MainPage = () => {
   const handleGetStarted = () => setShowModal(true);
   const handleCloseModal = () => {
     setShowModal(false);
-    setJobTitle('');
+    setJobTitle("");
     setStep(1);
     setSelection(null);
     setCvFile(null);
     setProposalFile(null);
-    setSourceOption('');
+    setSourceOption("");
     setSkills([]);
     setUploadProgress(0);
     setIsUploading(false);
@@ -242,9 +252,10 @@ const MainPage = () => {
       // Send CV to backend
       const formData = new FormData();
       formData.append("cv", cvFile);
+      setCvSent(true);
       try {
-        await fetch('http://127.0.0.1:8000/upload_cv', {
-          method: 'POST',
+        await fetch("http://127.0.0.1:8000/upload_cv", {
+          method: "POST",
           body: formData,
         });
         alert("CV sent successfully!");
@@ -256,8 +267,8 @@ const MainPage = () => {
       const formData = new FormData();
       formData.append("proposal", proposalFile);
       try {
-        await fetch('http://127.0.0.1:8000/upload_project', {
-          method: 'POST',
+        await fetch("http://127.0.0.1:8000/upload_project", {
+          method: "POST",
           body: formData,
         });
         alert("Project Proposal sent successfully!");
@@ -265,36 +276,50 @@ const MainPage = () => {
         console.error("Error sending Proposal:", error);
       }
     }
-    Navigate('/meeting');
+    Navigate("/meeting", {
+      state: {
+        cvSent
+      }
+    } );
   };
 
-
   const handleNextClick = () => {
-    setStep(prev => prev + 1);
+    setStep((prev) => prev + 1);
     // Navigate('/meeting');
+  };
 
-  }
-  
-  const handleBackClick = () => setStep(prev => prev - 1);
+  const handleBackClick = () => setStep((prev) => prev - 1);
 
   const handleSkillAdd = () => {
-    if (newSkill.trim() !== '' && !skills.includes(newSkill)) {
+    if (newSkill.trim() !== "" && !skills.includes(newSkill)) {
       setSkills([...skills, newSkill]);
-      setNewSkill('');
+      setNewSkill("");
     }
   };
 
-  const handleSkillRemove = skill => {
-    setSkills(skills.filter(s => s !== skill));
+  const handleSkillRemove = (skill) => {
+    setSkills(skills.filter((s) => s !== skill));
+  };
+  const handleCloseModal3 = async () => {
+    try {
+      console.log("Sending skills:", skills);
+      // const response = await axios.post("http://localhost:5000/api/skills", {
+      //   skills: skills.join(", "),
+      // });
+      // alert("Skills sent successfully!");
+    } catch (error) {
+      console.error("Error sending Proposal:", error);
+    }
+    
   };
 
   const handleFileChange = (e, type) => {
     const file = e.target.files[0];
     if (file) {
-      if (type === 'cv') {
+      if (type === "cv") {
         setCvFile(file);
         setCvFileName(file.name);
-      } else if (type === 'proposal') {
+      } else if (type === "proposal") {
         setProposalFile(file);
         setProposalFileName(file.name);
       }
@@ -313,21 +338,27 @@ const MainPage = () => {
       }, 500);
     }
   };
+
   return (
     <div className="main-page">
       <div className="container">
         <div className="text-section">
           <h1 className="title">
             {displayedTitle}
-            <span className={`cursor ${cursorVisible ? 'visible' : ''}`}>|</span>
+            <span className={`cursor ${cursorVisible ? "visible" : ""}`}>
+              |
+            </span>
           </h1>
           <p className="description">
-            <b>Are You Ready to Ace Your Interview?</b> Before you begin, make sure your CV is up-to-date. Find a quiet space, dress professionally, and prepare to engage in a realistic interview experience tailored to your background with your AI avatar!
+            <b>Are You Ready to Ace Your Interview?</b> Before you begin, make
+            sure your CV is up-to-date. Find a quiet space, dress
+            professionally, and prepare to engage in a realistic interview
+            experience tailored to your background with your AI avatar!
           </p>
           <div className="buttons">
             <StyledWrapper>
               <button type="button" className="btn" onClick={handleGetStarted}>
-                <strong>GET  STARTED</strong>
+                <strong>GET STARTED</strong>
                 <div id="container-stars">
                   <div id="stars" />
                 </div>
@@ -347,19 +378,23 @@ const MainPage = () => {
       {showModal && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={handleCloseModal}>&times;</span>
+            <span className="close" onClick={handleCloseModal}>
+              &times;
+            </span>
 
             {/* Step 1 */}
             {step === 1 && (
               <>
-                <label className='text1'>Enter Your Chosen Career Role :</label>
+                <label className="text1">Enter Your Chosen Career Role :</label>
                 <input
                   type="text"
                   value={jobTitle}
-                  onChange={e => setJobTitle(e.target.value)}
+                  onChange={(e) => setJobTitle(e.target.value)}
                   required
                 />
-                <label className='text1'>Choose How You Want To Continue :</label>
+                <label className="text1">
+                  Choose How You Want To Continue :
+                </label>
                 <div className="option-select">
                   <div
                     onClick={() => setSelection("cv")}
@@ -371,7 +406,9 @@ const MainPage = () => {
                 <div className="option-select">
                   <div
                     onClick={() => setSelection("no-cv")}
-                    className={`option ${selection === "no-cv" ? "selected" : ""}`}
+                    className={`option ${
+                      selection === "no-cv" ? "selected" : ""
+                    }`}
                   >
                     Continue Without Project Proposal
                   </div>
@@ -393,10 +430,13 @@ const MainPage = () => {
                   <div
                     className="upload-box"
                     onClick={() => document.getElementById("cv-upload").click()}
-                    style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      cursor: "pointer",
+                    }}
                   >
                     <svg
-
                       fill="#000000"
                       version="1.1"
                       id="Capa_1"
@@ -404,28 +444,28 @@ const MainPage = () => {
                       xmlnsXlink="http://www.w3.org/1999/xlink"
                       viewBox="0 0 342.219 342.219"
                       xmlSpace="preserve"
-                      style={{ width: '24px', height: '24px', marginRight: '10px' }}
+                      style={{
+                        width: "24px",
+                        height: "24px",
+                        marginRight: "10px",
+                      }}
                     >
                       <g>
-                        <path
-                          d="M328.914,0.002H13.305C5.957,0.002,0,5.959,0,13.307V328.91c0,7.35,5.958,13.307,13.305,13.307h315.609 c7.348,0,13.305-5.957,13.305-13.307V13.306C342.219,5.959,336.262,0.002,328.914,0.002z M315.609,315.605h-289V26.611h289 V315.605z"
-                        ></path>
-                        <path
-                          d="M180.52,107.507c-4.988-4.99-13.825-4.99-18.813,0L110.815,158.4c-5.197,5.197-5.197,13.618,0,18.814 c5.197,5.196,13.623,5.196,18.814,0l28.179-28.182v111.273c0,7.348,5.958,13.305,13.305,13.305 c7.348,0,13.305-5.957,13.305-13.305V149.033l28.184,28.182c2.596,2.6,6.002,3.898,9.406,3.898c3.402,0,6.812-1.299,9.406-3.898 c5.197-5.197,5.197-13.617,0-18.814L180.52,107.507z"
-                        ></path>
-                        <path
-                          d="M65.629,81.195h210.963c7.348,0,13.305-5.957,13.305-13.305c0-7.348-5.957-13.305-13.305-13.305H65.629 c-7.348,0-13.305,5.957-13.305,13.305C52.324,75.238,58.281,81.195,65.629,81.195z"
-                        ></path>
+                        <path d="M328.914,0.002H13.305C5.957,0.002,0,5.959,0,13.307V328.91c0,7.35,5.958,13.307,13.305,13.307h315.609 c7.348,0,13.305-5.957,13.305-13.307V13.306C342.219,5.959,336.262,0.002,328.914,0.002z M315.609,315.605h-289V26.611h289 V315.605z"></path>
+                        <path d="M180.52,107.507c-4.988-4.99-13.825-4.99-18.813,0L110.815,158.4c-5.197,5.197-5.197,13.618,0,18.814 c5.197,5.196,13.623,5.196,18.814,0l28.179-28.182v111.273c0,7.348,5.958,13.305,13.305,13.305 c7.348,0,13.305-5.957,13.305-13.305V149.033l28.184,28.182c2.596,2.6,6.002,3.898,9.406,3.898c3.402,0,6.812-1.299,9.406-3.898 c5.197-5.197,5.197-13.617,0-18.814L180.52,107.507z"></path>
+                        <path d="M65.629,81.195h210.963c7.348,0,13.305-5.957,13.305-13.305c0-7.348-5.957-13.305-13.305-13.305H65.629 c-7.348,0-13.305,5.957-13.305,13.305C52.324,75.238,58.281,81.195,65.629,81.195z"></path>
                       </g>
                     </svg>
                     <p className="upload-text" style={{ margin: 0 }}>
-                      {cvFileName ? `File Selected: ${cvFileName}` : 'Drag and drop or browse your files'}
+                      {cvFileName
+                        ? `File Selected: ${cvFileName}`
+                        : "Drag and drop or browse your files"}
                     </p>
                     <input
                       type="file"
                       id="cv-upload"
-                      onChange={(e) => handleFileChange(e, 'cv')}
-                      style={{ display: 'none' }}
+                      onChange={(e) => handleFileChange(e, "cv")}
+                      style={{ display: "none" }}
                     />
                   </div>
                 </div>
@@ -434,13 +474,24 @@ const MainPage = () => {
                 {isUploading && (
                   <div className="progress-container">
                     <div className="progress-bar">
-                      <div className="progress-fill" style={{ width: `${uploadProgress}%` }}></div>
+                      <div
+                        className="progress-fill"
+                        style={{ width: `${uploadProgress}%` }}
+                      ></div>
                     </div>
-                    <p className="progress-text">Uploading... {uploadProgress}%</p>
+                    <p className="progress-text">
+                      Uploading... {uploadProgress}%
+                    </p>
                   </div>
                 )}
-                <button className="back-btn" onClick={handleBackClick}>Back</button>
-                <button className="next-btn" onClick={handleNextClick} disabled={!cvFile}>
+                <button className="back-btn" onClick={handleBackClick}>
+                  Back
+                </button>
+                <button
+                  className="next-btn"
+                  onClick={handleNextClick}
+                  disabled={!cvFile}
+                >
                   Next
                 </button>
               </>
@@ -449,11 +500,19 @@ const MainPage = () => {
             {/* Step 3 (Upload Project Proposal) */}
             {step === 3 && selection === "cv" && (
               <>
-                <label className="title1">Upload your Project Proposal (Optional)</label>
+                <label className="title1">
+                  Upload your Project Proposal (Optional)
+                </label>
                 <div
                   className="upload-box"
-                  onClick={() => document.getElementById("proposal-upload").click()}
-                  style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                  onClick={() =>
+                    document.getElementById("proposal-upload").click()
+                  }
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    cursor: "pointer",
+                  }}
                 >
                   <svg
                     fill="#000000"
@@ -463,90 +522,137 @@ const MainPage = () => {
                     xmlnsXlink="http://www.w3.org/1999/xlink"
                     viewBox="0 0 342.219 342.219"
                     xmlSpace="preserve"
-                    style={{ width: '24px', height: '24px', marginRight: '10px' }}
+                    style={{
+                      width: "24px",
+                      height: "24px",
+                      marginRight: "10px",
+                    }}
                   >
                     <g>
-                      <path
-                        d="M328.914,0.002H13.305C5.957,0.002,0,5.959,0,13.307V328.91c0,7.35,5.958,13.307,13.305,13.307h315.609 c7.348,0,13.305-5.957,13.305-13.307V13.306C342.219,5.959,336.262,0.002,328.914,0.002z M315.609,315.605h-289V26.611h289 V315.605z"
-                      ></path>
-                      <path
-                        d="M180.52,107.507c-4.988-4.99-13.825-4.99-18.813,0L110.815,158.4c-5.197,5.197-5.197,13.618,0,18.814 c5.197,5.196,13.623,5.196,18.814,0l28.179-28.182v111.273c0,7.348,5.958,13.305,13.305,13.305 c7.348,0,13.305-5.957,13.305-13.305V149.033l28.184,28.182c2.596,2.6,6.002,3.898,9.406,3.898c3.402,0,6.812-1.299,9.406-3.898 c5.197-5.197,5.197-13.617,0-18.814L180.52,107.507z"
-                      ></path>
-                      <path
-                        d="M65.629,81.195h210.963c7.348,0,13.305-5.957,13.305-13.305c0-7.348-5.957-13.305-13.305-13.305H65.629 c-7.348,0-13.305,5.957-13.305,13.305C52.324,75.238,58.281,81.195,65.629,81.195z"
-                      ></path>
+                      <path d="M328.914,0.002H13.305C5.957,0.002,0,5.959,0,13.307V328.91c0,7.35,5.958,13.307,13.305,13.307h315.609 c7.348,0,13.305-5.957,13.305-13.307V13.306C342.219,5.959,336.262,0.002,328.914,0.002z M315.609,315.605h-289V26.611h289 V315.605z"></path>
+                      <path d="M180.52,107.507c-4.988-4.99-13.825-4.99-18.813,0L110.815,158.4c-5.197,5.197-5.197,13.618,0,18.814 c5.197,5.196,13.623,5.196,18.814,0l28.179-28.182v111.273c0,7.348,5.958,13.305,13.305,13.305 c7.348,0,13.305-5.957,13.305-13.305V149.033l28.184,28.182c2.596,2.6,6.002,3.898,9.406,3.898c3.402,0,6.812-1.299,9.406-3.898 c5.197-5.197,5.197-13.617,0-18.814L180.52,107.507z"></path>
+                      <path d="M65.629,81.195h210.963c7.348,0,13.305-5.957,13.305-13.305c0-7.348-5.957-13.305-13.305-13.305H65.629 c-7.348,0-13.305,5.957-13.305,13.305C52.324,75.238,58.281,81.195,65.629,81.195z"></path>
                     </g>
                   </svg>
                   <p className="upload-text" style={{ margin: 0 }}>
-                    {proposalFileName ? `File Selected: ${proposalFileName}` : 'Drag and drop or browse your files'}
+                    {proposalFileName
+                      ? `File Selected: ${proposalFileName}`
+                      : "Drag and drop or browse your files"}
                   </p>
                   <input
                     type="file"
                     id="proposal-upload"
-                    onChange={(e) => handleFileChange(e, 'proposal')}
-                    style={{ display: 'none' }}
+                    onChange={(e) => handleFileChange(e, "proposal")}
+                    style={{ display: "none" }}
                   />
                 </div>
                 {/* Upload progress */}
                 {isUploading && (
                   <div className="progress-container">
                     <div className="progress-bar">
-                      <div className="progress-fill" style={{ width: `${uploadProgress}%` }}></div>
+                      <div
+                        className="progress-fill"
+                        style={{ width: `${uploadProgress}%` }}
+                      ></div>
                     </div>
-                    <p className="progress-text">Uploading... {uploadProgress}%</p>
+                    <p className="progress-text">
+                      Uploading... {uploadProgress}%
+                    </p>
                   </div>
                 )}
-                <button className="back-btn" onClick={handleBackClick}>Back</button>
+                <button className="back-btn" onClick={handleBackClick}>
+                  Back
+                </button>
                 <button className="next-btn" onClick={handleNextClick}>
                   Next
                 </button>
-
               </>
             )}
 
             {/* Step 4 (Source Option) */}
             {step === 4 && selection === "cv" && (
               <>
-                <label className='title1'>What source do you want to be based on?</label>
+                <label className="title1">
+                  What source do you want to be based on?
+                </label>
                 <div className="option-select">
-                  <div onClick={() => setSourceOption("cv")} className={`option ${sourceOption === "cv" ? "selected" : ""}`}>CV Based</div>
+                  <div
+                    onClick={() => setSourceOption("cv")}
+                    className={`option ${
+                      sourceOption === "cv" ? "selected" : ""
+                    }`}
+                  >
+                    CV Based
+                  </div>
                 </div>
                 <div className="option-select">
-                  <div onClick={() => setSourceOption("proposal")} className={`option ${sourceOption === "proposal" ? "selected" : ""}`}>Project Proposal Based</div>
+                  <div
+                    onClick={() => setSourceOption("proposal")}
+                    className={`option ${
+                      sourceOption === "proposal" ? "selected" : ""
+                    }`}
+                  >
+                    Project Proposal Based
+                  </div>
                 </div>
-                <button className="back-btn" onClick={handleBackClick}>Back</button>
-                <button className="finish-btn" onClick={() => { handleCloseModal(); handleCloseModal2(); }} disabled={!sourceOption}>
-                Finish
+                <button className="back-btn" onClick={handleBackClick}>
+                  Back
                 </button>
-
-
+                <button
+                  className="finish-btn"
+                  onClick={() => {
+                    handleCloseModal();
+                    handleCloseModal2();
+                  }}
+                  disabled={!sourceOption}
+                >
+                  Finish
+                </button>
               </>
             )}
 
             {/* Step 2 (No CV) */}
             {step === 2 && selection === "no-cv" && (
               <>
-                  <label>What are the skills you are confident at?</label>
-                  <div className='skill'>
-                    <input type="text" value={newSkill} onChange={e => setNewSkill(e.target.value)} />
-                    <button onClick={handleSkillAdd} className='addskill'>+</button></div>
-                  
-                  <div className="skills-list">
-                    {skills.map(skill => (
-                      <div key={skill} className="skill-tag">
-                        {skill} <span onClick={() => handleSkillRemove(skill)}>x</span>
-                      </div>
-                    ))}
-                  </div>
-                  <button className="back-btn" onClick={handleBackClick}>Back</button>
-                  <button className="finish-btn" onClick={handleCloseModal} >
-                    Finish
+                <label>What are the skills you are confident at?</label>
+                <div className="skill">
+                  <input
+                    type="text"
+                    value={newSkill}
+                    onChange={(e) => setNewSkill(e.target.value)}
+                  />
+                  <button onClick={handleSkillAdd} className="addskill">
+                    +
                   </button>
+                </div>
+
+                <div className="skills-list">
+                  {skills.map((skill) => (
+                    <div key={skill} className="skill-tag">
+                      {skill}{" "}
+                      <span onClick={() => handleSkillRemove(skill)}>x</span>
+                    </div>
+                  ))}
+                </div>
+                <button className="back-btn" onClick={handleBackClick}>
+                  Back
+                </button>
+                <button
+                  className="finish-btn"
+                  onClick={() => {
+                    handleCloseModal();
+                    handleCloseModal3();
+                    Navigate("/meeting", {
+                      state: { cvSent, skills},
+                    });
+                  }}
+                >
+                  Finish
+                </button>
               </>
             )}
 
             {/* Back button (except step 1) */}
-
           </div>
         </div>
       )}

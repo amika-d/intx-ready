@@ -84,6 +84,37 @@ router.post("/chat", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+router.post("/skills", async (req, res) => {
+  try {
+    const { technical_skills } = req.body;
+    if (!technical_skills) {
+      return res.status(400).json({ error: "Technical skills are required" });
+    }
+    
+    const prompt = `You are an AI interviewer named Nadia. Conduct a professional and friendly interview with the candidate based on these skills:
+
+
+- Technical Skills: ${technical_skills}
+
+Follow this format:
+1. Greet the candidate and ask them to introduce themselves.
+2. Ask questions one at a time about their listed skills such as:
+   - "How have you applied ${technical_skills} in a real-world project?"
+   - "What challenges have you faced using ${technical_skills}, and how did you solve them?"
+3. End the interview professionally.
+
+Wait for the candidate's response before asking the next question. `;
+
+    const response = await sendMessage(prompt);
+    console.log(response);
+    res.json({ response });
+    
+  } catch (error) {
+    console.error("Error in /skills:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 router.post("/feedback", async (req, res) => {
   try {
     const { aiResponse, userInput } = req.body;
