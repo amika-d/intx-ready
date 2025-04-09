@@ -350,7 +350,56 @@ function Feedback() {
             Here's a detailed analysis of your today's performance:
           </Description>
         </Header>
+        {/* <FeedbackSection>
+              <FeedbackTitle>AI Feedback</FeedbackTitle>
+              <QuestionsContainer>
+                {feedbackData.map((feedback, index) => {
+                  // More robust regex patterns that handle various formats
+                  const strengthsMatch = feedback.match(
+                    /- Strengths:\s*([\s\S]*?)(?=- Areas for Improvement:|$)/i
+                  );
+                  
+                  const areasMatch = feedback.match(
+                    /- Areas for Improvement:\s*([\s\S]*?)(?=$)/i
+                  );
+                  
+                  const strengths = strengthsMatch ? strengthsMatch[1].trim() : "No strengths found.";
+                  const areas = areasMatch ? areasMatch[1].trim() : "No areas for improvement found.";
+                  
 
+                  return (
+                    <QuestionCard key={index}>
+                      <QuestionHeader>Question {index + 1}</QuestionHeader>
+                      <AnswerSection>
+                        <SectionLabel>Your Answer</SectionLabel>
+                        <SectionContent>
+                          {userAnswers[index] || "No response recorded"}
+                        </SectionContent>
+                      </AnswerSection>
+                      <div>
+                        <SectionLabel>Feedback</SectionLabel>
+                        <FeedbackContent>
+                          <strong>Strengths:</strong> {strengths}
+                          <br />
+                          <br />
+                          <strong>Areas for improvement:</strong> {areas}
+                        </FeedbackContent>
+                      </div>
+                    </QuestionCard>
+                  );
+                })}
+
+                {feedbackData.length === 0 && (
+                  <QuestionCard>
+                    <QuestionHeader>No feedback available</QuestionHeader>
+                    <SectionContent>
+                      No feedback data was found for this session. Please make
+                      sure you've completed an interview.
+                    </SectionContent>
+                  </QuestionCard>
+                )}
+              </QuestionsContainer>
+            </FeedbackSection> */}
         <MainContent>
           <LeftColumn>
             <CircleProgressContainer>
@@ -377,35 +426,22 @@ function Feedback() {
           </LeftColumn>
 
           <RightColumn>
-            <FeedbackSection>
+          <FeedbackSection>
               <FeedbackTitle>AI Feedback</FeedbackTitle>
               <QuestionsContainer>
                 {feedbackData.map((feedback, index) => {
                   // More robust regex patterns that handle various formats
                   const strengthsMatch = feedback.match(
-                    /\*\*Strengths:\*\*([\s\S]*?)(?=\*\*Areas for [Ii]mprovement|\*\*Areas to [Ii]mprove|$)/i
+                    /- Strengths:\s*([\s\S]*?)(?=- Areas for Improvement:|$)/i
                   );
+                  
                   const areasMatch = feedback.match(
-                    /\*\*Areas for [Ii]mprovement:\*\*|\*\*Areas to [Ii]mprove:\*\*([\s\S]*?)(?=\*\*|$)/i
+                    /- Areas for Improvement:\s*([\s\S]*?)(?=$)/i
                   );
-
-                  // Add debugging to see what's being matched
-                  console.log(
-                    `Question ${index + 1} Strengths Match:`,
-                    strengthsMatch
-                  );
-                  console.log(`Question ${index + 1} Areas Match:`, areasMatch);
-
-                  let strengths = "No strengths information available";
-                  let areas = "No areas for improvement available";
-
-                  if (strengthsMatch && strengthsMatch[1]) {
-                    strengths = strengthsMatch[1].trim();
-                  }
-
-                  if (areasMatch && areasMatch[1]) {
-                    areas = areasMatch[1].trim();
-                  }
+                  
+                  const strengths = strengthsMatch ? strengthsMatch[1].trim() : "No strengths found.";
+                  const areas = areasMatch ? areasMatch[1].trim() : "No areas for improvement found.";
+                  
 
                   return (
                     <QuestionCard key={index}>

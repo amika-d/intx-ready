@@ -12,25 +12,28 @@ body {
   background: var(--bg);
   min-height: 90vh;
   font-family: 'Inter', system-ui, sans-serif;
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
 } 
 
 /* 3D Perspective Container */
 .meeting-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(500px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 75%), 1fr));
   gap: 1rem;
-  perspective: 1000px;
+  perspective: 100px;
   padding: 2rem;
 }
 
 /* Video Card Effect */
 .video-wrapper {
-  position: relative;
+  position: fixed;
   border-radius: 1.5rem;
   transform-style: preserve-3d;
   transition: var(--transition);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  height: 100%;
+  height: 75%;
 }
 
 .video-wrapper video,
@@ -94,7 +97,7 @@ body {
 
 .controls {
   position: fixed;
-  bottom: -6rem; /* 2rem from the bottom of the viewport */
+  bottom: 8rem; /* 2rem from the bottom of the viewport */
   left: 50%; /* Center horizontally */
   transform: translateX(-50%); /* Offset by half its width to truly center */
   display: flex;

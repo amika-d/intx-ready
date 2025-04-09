@@ -4,6 +4,7 @@ import "./MainPage.css";
 import image from "./Avatar.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Typewriter from "typewriter-effect"
 
 const StyledWrapper = styled.div`
   .btn {
@@ -344,10 +345,20 @@ const MainPage = () => {
       <div className="container">
         <div className="text-section">
           <h1 className="title">
-            {displayedTitle}
-            <span className={`cursor ${cursorVisible ? "visible" : ""}`}>
-              |
-            </span>
+            LET'S BEGIN YOUR AI INTERVIEW SIMULATION:
+            <Typewriter
+              options={{
+                autoStart: true,
+                loop: true,
+              }}
+              onInit={(typewriter) => {
+                typewriter
+                  .typeString("<span class='text-1'>PRACTICE MAKES PERFECT!</span>")
+                  .pauseFor(2000)
+                  .deleteAll()
+                  .start()
+              }}
+            />
           </h1>
           <p className="description">
             <b>Are You Ready to Ace Your Interview?</b> Before you begin, make
