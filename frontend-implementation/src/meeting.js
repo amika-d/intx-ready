@@ -285,6 +285,7 @@ const MeetingPage = () => {
         }
     };
     
+
     const stopTranscription = () => {
         if (isTranscribing) {
             // Stop audio recording
@@ -297,6 +298,7 @@ const MeetingPage = () => {
         }
     };
     
+
     const sendAudioToWhisper = async (audioBlob) => {
         try {
             // Create form data for the API request
@@ -305,7 +307,7 @@ const MeetingPage = () => {
             formData.append('model', 'whisper-1');
             
             // Set your OpenAI API key in environment variables for security
-            const apiKey = "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";
+            const apiKey = "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";
             
             // Send the audio to OpenAI Whisper API
             const response = await fetch(
