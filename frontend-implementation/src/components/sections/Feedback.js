@@ -319,10 +319,10 @@ const BarValue = styled.div`
 
 function Feedback() {
   const location = useLocation();
-  const feedbackData = location.state?.feedbackData || [];
+  const feedbackData = location.state?.feedback || [];
   const userAnswers =  location.state?.userAnswers || [];
-  console.log("Feedback Data:", feedbackData);
-  console.log("User Answers:", userAnswers);
+  console.log("Feedback Data from feedback page: ", feedbackData);
+  console.log("User Answers from feedback page:", userAnswers);
   const stats = {
     overallScore: 72,
     metrics: [

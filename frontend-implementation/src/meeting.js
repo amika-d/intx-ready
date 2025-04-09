@@ -176,7 +176,8 @@ const MeetingPage = () => {
             socketRef.current.emit("leave-room");
             socketRef.current.disconnect();
         }
-        
+        console.log("sending feedback to the feedback page", feedback);
+        console.log("sending userAnswers to the feedback page", userAnswers);
         navigation('/feedback',
             {state: {
                 feedback: feedback,
@@ -363,7 +364,7 @@ const MeetingPage = () => {
             const response = await axios.post("http://localhost:5000/api/feedback", {aiResponse, userInput});
             console.log("Feedback response:", response.data);
             
-            const updatedFeedback = [...feedback, response.data];
+            const updatedFeedback = [...feedback, response.data.response];
 
             setFeedback(updatedFeedback);
             
