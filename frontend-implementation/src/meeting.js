@@ -307,7 +307,7 @@ const MeetingPage = () => {
             formData.append('model', 'whisper-1');
             
             // Set your OpenAI API key in environment variables for security
-            const apiKey = "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";
+            const apiKey = "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";
             
             // Send the audio to OpenAI Whisper API
             const response = await fetch(
@@ -605,14 +605,14 @@ const MeetingPage = () => {
                     </div>
                 )}
             </div>
-            <div >
-        <h1>Meeting Page</h1>
+            {/* <div > */}
+        {/* <h1>Meeting Page</h1> */}
         <div style={{ marginTop: '1rem' }}>
-                <h1>Meeting Page</h1>
-                {cvId ? <p>Interview ID: {response}</p> : <p>Loading...</p>}
+                {/* {/* <h1>Meeting Page</h1> */}
+                
                 <button onClick={startInterview}>Start Interview</button>
 
-                {/* Input + Button for sending message */}
+                
                 <div style={{ display: 'flex', marginTop: '1rem', gap: '0.5rem' }}>
                     <input 
                         type="text" 
@@ -627,8 +627,8 @@ const MeetingPage = () => {
                     >
                         Send
                     </button>
-                </div>
-            </div>
+                </div> 
+            {/* </div> */}
         </div>
           
             

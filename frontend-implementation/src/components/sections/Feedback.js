@@ -331,9 +331,9 @@ function Feedback() {
       { title: "Knowledge Gain", value: 34, prefix: "+" },
     ],
     skills: [
-      { name: "Communication Skills", value: 74 },
+      { name: "Communication Skills", value: 44 },
       { name: "Content", value: 52 },
-      { name: "Confidence", value: 36 },
+      { name: "Confidence", value: 45 },
     ],
     dailyProgress: [60, 75, 40, 55, 70, 80, 65],
   };
@@ -350,58 +350,72 @@ function Feedback() {
             Here's a detailed analysis of your today's performance:
           </Description>
         </Header>
-        {/* <FeedbackSection>
-              <FeedbackTitle>AI Feedback</FeedbackTitle>
-              <QuestionsContainer>
-                {feedbackData.map((feedback, index) => {
-                  // More robust regex patterns that handle various formats
-                  const strengthsMatch = feedback.match(
-                    /- Strengths:\s*([\s\S]*?)(?=- Areas for Improvement:|$)/i
-                  );
-                  
-                  const areasMatch = feedback.match(
-                    /- Areas for Improvement:\s*([\s\S]*?)(?=$)/i
-                  );
-                  
-                  const strengths = strengthsMatch ? strengthsMatch[1].trim() : "No strengths found.";
-                  const areas = areasMatch ? areasMatch[1].trim() : "No areas for improvement found.";
-                  
+        <FeedbackSection>
+    <FeedbackTitle>AI Feedback</FeedbackTitle>
+    <QuestionsContainer>
+      {feedbackData.map((feedback, index) => {
+        // Parse the feedback string to extract strengths and areas for improvement
+        const parseFeedback = (text) => {
+          try {
+            // Split the text to get the part after "Strengths:"
+            const strengthsSection = text.split('-   Strengths:')[1];
+            if (!strengthsSection) return { strengths: '', areas: '' };
+            
+            // Split the strengths section to get the part before "Areas for Improvement:"
+            const strengthsAndAreas = strengthsSection.split('-   Areas for Improvement:');
+            
+            // Extract strengths and areas
+            const strengths = strengthsAndAreas[0].trim();
+            const areas = strengthsAndAreas.length > 1 ? strengthsAndAreas[1].trim() : '';
+            
+            return { strengths, areas };
+          } catch (error) {
+            console.error("Error parsing feedback:", error);
+            return { strengths: '', areas: '' };
+          }
+        };
+        
+        const { strengths, areas } = parseFeedback(feedback);
 
-                  return (
-                    <QuestionCard key={index}>
-                      <QuestionHeader>Question {index + 1}</QuestionHeader>
-                      <AnswerSection>
-                        <SectionLabel>Your Answer</SectionLabel>
-                        <SectionContent>
-                          {userAnswers[index] || "No response recorded"}
-                        </SectionContent>
-                      </AnswerSection>
-                      <div>
-                        <SectionLabel>Feedback</SectionLabel>
-                        <FeedbackContent>
-                          <strong>Strengths:</strong> {strengths}
-                          <br />
-                          <br />
-                          <strong>Areas for improvement:</strong> {areas}
-                        </FeedbackContent>
-                      </div>
-                    </QuestionCard>
-                  );
-                })}
+        return (
+          <QuestionCard key={index}>
+            <QuestionHeader>Question {index + 1}</QuestionHeader>
+            <AnswerSection>
+              <SectionLabel>Your Answer</SectionLabel>
+              <SectionContent>
+                {userAnswers[index] || "No response recorded"}
+              </SectionContent>
+            </AnswerSection>
+            <div>
+              <SectionLabel>AI Feedback</SectionLabel>
+              <FeedbackContent>
+                <div>
+                  <strong>Strengths:</strong>
+                  <div dangerouslySetInnerHTML={{ __html: strengths.replace(/\n/g, '<br>') }} />
+                </div>
+                <br />
+                <div>
+                  <strong>Areas for Improvement:</strong>
+                  <div dangerouslySetInnerHTML={{ __html: areas.replace(/\n/g, '<br>') }} />
+                </div>
+              </FeedbackContent>
+            </div>
+          </QuestionCard>
+        );
+      })}
 
-                {feedbackData.length === 0 && (
-                  <QuestionCard>
-                    <QuestionHeader>No feedback available</QuestionHeader>
-                    <SectionContent>
-                      No feedback data was found for this session. Please make
-                      sure you've completed an interview.
-                    </SectionContent>
-                  </QuestionCard>
-                )}
-              </QuestionsContainer>
-            </FeedbackSection> */}
+      {feedbackData.length === 0 && (
+        <QuestionCard>
+          <QuestionHeader>No feedback available</QuestionHeader>
+          <SectionContent>
+            No feedback data was found for this session. Please make sure you've completed an interview.
+          </SectionContent>
+        </QuestionCard>
+      )}
+    </QuestionsContainer>
+  </FeedbackSection>
         <MainContent>
-          <LeftColumn>
+          {/* <LeftColumn>
             <CircleProgressContainer>
               <svg width="100%" height="100%" viewBox="0 0 100 100">
                 <CircleBackground cx="50" cy="50" r="40" />
@@ -423,60 +437,74 @@ function Feedback() {
                 </SkillItem>
               ))}
             </SkillsContainer>
-          </LeftColumn>
+          </LeftColumn> */}
 
-          <RightColumn>
-          <FeedbackSection>
-              <FeedbackTitle>AI Feedback</FeedbackTitle>
-              <QuestionsContainer>
-                {feedbackData.map((feedback, index) => {
-                  // More robust regex patterns that handle various formats
-                  const strengthsMatch = feedback.match(
-                    /- Strengths:\s*([\s\S]*?)(?=- Areas for Improvement:|$)/i
-                  );
-                  
-                  const areasMatch = feedback.match(
-                    /- Areas for Improvement:\s*([\s\S]*?)(?=$)/i
-                  );
-                  
-                  const strengths = strengthsMatch ? strengthsMatch[1].trim() : "No strengths found.";
-                  const areas = areasMatch ? areasMatch[1].trim() : "No areas for improvement found.";
-                  
+          {/* <RightColumn> */}
+          {/* <FeedbackSection>
+    <FeedbackTitle>AI Feedback</FeedbackTitle>
+    <QuestionsContainer>
+      {feedbackData.map((feedback, index) => {
+        // Parse the feedback string to extract strengths and areas for improvement
+        const parseFeedback = (text) => {
+          try {
+            // Split the text to get the part after "Strengths:"
+            const strengthsSection = text.split('-   Strengths:')[1];
+            if (!strengthsSection) return { strengths: '', areas: '' };
+            
+            // Split the strengths section to get the part before "Areas for Improvement:"
+            const strengthsAndAreas = strengthsSection.split('-   Areas for Improvement:');
+            
+            // Extract strengths and areas
+            const strengths = strengthsAndAreas[0].trim();
+            const areas = strengthsAndAreas.length > 1 ? strengthsAndAreas[1].trim() : '';
+            
+            return { strengths, areas };
+          } catch (error) {
+            console.error("Error parsing feedback:", error);
+            return { strengths: '', areas: '' };
+          }
+        };
+        
+        const { strengths, areas } = parseFeedback(feedback);
 
-                  return (
-                    <QuestionCard key={index}>
-                      <QuestionHeader>Question {index + 1}</QuestionHeader>
-                      <AnswerSection>
-                        <SectionLabel>Your Answer</SectionLabel>
-                        <SectionContent>
-                          {userAnswers[index] || "No response recorded"}
-                        </SectionContent>
-                      </AnswerSection>
-                      <div>
-                        <SectionLabel>Feedback</SectionLabel>
-                        <FeedbackContent>
-                          <strong>Strengths:</strong> {strengths}
-                          <br />
-                          <br />
-                          <strong>Areas for improvement:</strong> {areas}
-                        </FeedbackContent>
-                      </div>
-                    </QuestionCard>
-                  );
-                })}
+        return (
+          <QuestionCard key={index}>
+            <QuestionHeader>Question {index + 1}</QuestionHeader>
+            <AnswerSection>
+              <SectionLabel>Your Answer</SectionLabel>
+              <SectionContent>
+                {userAnswers[index] || "No response recorded"}
+              </SectionContent>
+            </AnswerSection>
+            <div>
+              <SectionLabel>AI Feedback</SectionLabel>
+              <FeedbackContent>
+                <div>
+                  <strong>Strengths:</strong>
+                  <div dangerouslySetInnerHTML={{ __html: strengths.replace(/\n/g, '<br>') }} />
+                </div>
+                <br />
+                <div>
+                  <strong>Areas for Improvement:</strong>
+                  <div dangerouslySetInnerHTML={{ __html: areas.replace(/\n/g, '<br>') }} />
+                </div>
+              </FeedbackContent>
+            </div>
+          </QuestionCard>
+        );
+      })}
 
-                {feedbackData.length === 0 && (
-                  <QuestionCard>
-                    <QuestionHeader>No feedback available</QuestionHeader>
-                    <SectionContent>
-                      No feedback data was found for this session. Please make
-                      sure you've completed an interview.
-                    </SectionContent>
-                  </QuestionCard>
-                )}
-              </QuestionsContainer>
-            </FeedbackSection>
-          </RightColumn>
+      {feedbackData.length === 0 && (
+        <QuestionCard>
+          <QuestionHeader>No feedback available</QuestionHeader>
+          <SectionContent>
+            No feedback data was found for this session. Please make sure you've completed an interview.
+          </SectionContent>
+        </QuestionCard>
+      )}
+    </QuestionsContainer>
+  </FeedbackSection> */}
+          {/* </RightColumn> */}
         </MainContent>
       </ContentSection>
     </PageWrapper>
