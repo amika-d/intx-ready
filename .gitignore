@@ -16,7 +16,7 @@ logs/
 logs.txt
 
 # Machine Learning (Python) Folder
-
+ml/
 ml/**/*.pyc       # Ignore Python bytecode files
 ml/__pycache__/    # Ignore Python cache directories
 
