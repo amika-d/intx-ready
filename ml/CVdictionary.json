@@ -1,7 +1,7 @@
 {
-    "name": "Yasanthi Keerthirathna",
-    "technical_skills": "- HTML\n- CSS\n- JavaScript\n- Python\n- Java\n- MySQL",
-    "soft_skills": "Creative Thinking, Proactive, Detail-oriented, Versatile, Dedicated, Innovative.",
-    "projects": "Projects\n1. Plane Management Software\n   - Plane management application created using Java\n   - Users can book, cancel seats, and find seat availability\n   - Utilizes OOP concepts such as encapsulation, abstraction, and polymorphism\n\n2. Taskia - Task Management Website\n   - Task management website landing page design created using HTML, CSS, and Bootstrap\n\n3. AthWala - Donation Web App\n   - Full-stack web app developed using Python and React\n   - MySql used as the database\n\nNo projects are mentioned in this CV.",
-    "career_objective": "To continuously enhance my skill set and deliver innovative solutions as a Full-Stack Developer."
+    "name": "Amika Deshapriya",
+    "technical_skills": "- Languages: Python, Java, JavaScript\n- Frontend: React.js, Next.js, Three.js, WebGL\n- Backend: Node.js, Express.js, Django, FastAPI\n- Databases: MongoDB, MySQL, PostgreSQL\n- DevOps: Docker, DNS\n- AI/ML: TensorFlow, PyTorch, NLP\n- OS: Linux, macOS\n- Cloud: GCP, Digital Ocean",
+    "soft_skills": "Project Management, Public Relations, Teamwork, Time Management, Leadership, Effective Communication, Critical Thinking.",
+    "projects": "**Projects:**\n1. IntX (Second-Year Group Project) - Backend & AI Integration\n   - Developed an AI-driven mock interview platform with voice synthesis to help individuals prepare effectively.\n   - Managed the backend and collaborated on AI model integration for personalized interview feedback.\n   - Built real-time conversation features to simulate realistic interview experiences.\n   \n2. AI Agent SaaS (Feb 2025)\n   - Developed an AI-powered SaaS platform for task automation with autonomous AI agents.\n   - Integrated OpenAI\u2019s LLMs and LangChain for data processing and workflow execution.\n   - Built a scalable backend (Node.js/Python) and a React/Next.js dashboard for AI agent management.\n   - Implemented cloud deployment, API integrations, and authentication for a secure SaaS experience.",
+    "career_objective": "Aspiring AI engineer and full-stack developer passionate about efficiency, innovation, and pushing technological boundaries."
 }

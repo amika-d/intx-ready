@@ -260,6 +260,7 @@ const MainPage = () => {
           body: formData,
         });
         alert("CV sent successfully!");
+        setCvSent(true);
       } catch (error) {
         console.error("Error sending CV:", error);
       }
@@ -279,7 +280,7 @@ const MainPage = () => {
     }
     Navigate("/meeting", {
       state: {
-        cvSent
+        cvSent: true,
       }
     } );
   };

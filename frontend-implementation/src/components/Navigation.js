@@ -136,7 +136,7 @@ const Navigation = () => {
           <MenuItem onClick={() => navigateToSection("about")}>About Us</MenuItem>
           <MenuItem onClick={() => navigateToSection("Roadmap")}>Services</MenuItem>
           <MenuItem onClick={() => navigateToSection("faq")}>FAQ</MenuItem>
-          <MenuItem onClick={handleFeedbackClick}>Feedback</MenuItem>
+          
         </Menu>
 
         {/* Login Button */}

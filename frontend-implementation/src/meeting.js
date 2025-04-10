@@ -307,7 +307,7 @@ const MeetingPage = () => {
             formData.append('model', 'whisper-1');
             
             // Set your OpenAI API key in environment variables for security
-            const apiKey = "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";
+            const apiKey = "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";
             
             // Send the audio to OpenAI Whisper API
             const response = await fetch(
@@ -426,8 +426,14 @@ const MeetingPage = () => {
             // console.log(messages);
     
             // Call the synthesizeSpeech function to send the message to Wavenet or any other TTS system
-            console.log("AI Response after synthesis:", data.response);
-            const res=await synthesizeSpeech(data.response);
+            const cleanedResponse = data.response
+                .replace(/\*\*/g, "")
+                .replace(/\*/g, "")
+                .trim();
+
+            console.log("AI Response after synthesis:", cleanedResponse);
+
+            const res=await synthesizeSpeech(cleanedResponse);
             
             const updatedFeedback = getFeedback(aiResponse, userInput);
             console.log("Updated feedback after the api call:", updatedFeedback);
@@ -445,7 +451,8 @@ const MeetingPage = () => {
            
             console.log("🚀 Starting processCV function...");
             let response;
-            if (cvSend){
+            if (!skills || skills.length === 0) {
+                console.error("Skills array is empty. Can process CV.");
                 console.log("sending request to the openai");
                 response = await axios.post("http://localhost:8000/process_cv");
             }else{
